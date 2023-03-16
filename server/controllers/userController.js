@@ -21,6 +21,9 @@ class UserController {
         if (candidate) {
             return next(ApiError.badRequest('Пользователь с таким email уже существует'))
         }
+        if(!role){
+            return next(ApiError.badRequest('Выберите роль'))
+        }
         const hashPassword = await bcrypt.hash(password, 5)
         const user = await User.create({email, role, password: hashPassword})
         const basket = await Basket.create({userId: user.id})
@@ -46,6 +49,7 @@ class UserController {
         const token = generateJwt(req.user.id, req.user.email, req.user.role)
         return res.json({token})
     }
+
 }
 
 module.exports = new UserController()

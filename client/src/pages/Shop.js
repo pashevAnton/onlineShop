@@ -17,14 +17,14 @@ const Shop = observer(() => {
             device.setDevices(data.rows)
             device.setTotalCount(data.count)
         })
-    }, [])
+    })
 
     useEffect(() => {
         fetchDevices(device.selectedType.id, device.selectedBrand.id, device.page, 3).then(data => {device.setDevices(data.rows)
             device.setDevices(data.rows)
             device.setTotalCount(data.count)
         })
-    }, [device.page, device.selectedType, device.selectedBrand])
+    }, [device.page, device.selectedType, device.selectedBrand, device])
     return (
         <Container>
             <Form className="d-flex mt-2">

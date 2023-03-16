@@ -12,20 +12,21 @@ const Auth = observer(() => {
     const isLogin = location.pathname === LOGIN_ROUTE
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [role, setRole] = useState('')
     const navigate = useNavigate()
     const click = async () => {
         try {
             let data;
-            if(isLogin){
+            if (isLogin) {
                 data = await login(email, password)
             } else {
-                data = await registration(email, password)
+                data = await registration(email, password, role)
             }
 
             user.setUser(data)
             user.setIsAuth(true)
             navigate(SHOP_ROUTE)
-        } catch (e){
+        } catch (e) {
             alert(e.response.data.message)
         }
     }
@@ -51,6 +52,26 @@ const Auth = observer(() => {
                         onChange={e => setPassword(e.target.value)}
                         type="password"
                     />
+                    {!isLogin ?
+                        <div className="mt-2" onChange={e => setRole(e.target.value)}>
+                            <Form.Check
+                                label="Администратор"
+                                name="group1"
+                                type="radio"
+                                id="radio-1"
+                                value="ADMIN"
+                            />
+                            <Form.Check
+                                label="Покупатель"
+                                name="group1"
+                                type="radio"
+                                id="radio-2"
+                                value="USER"
+                            />
+                        </div>
+                        :
+                        ''
+                    }
                     <Form className="d-flex justify-content-between align-items-center">
                         {isLogin ?
                             <div>
