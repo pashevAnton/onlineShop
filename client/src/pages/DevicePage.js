@@ -1,15 +1,19 @@
-import {useEffect, useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import {Button, Card, Col, Container, Form, Image, Row} from "react-bootstrap";
 import bigStar from '../assets/bigstar.svg'
 import {useParams} from 'react-router-dom'
 import {fetchOneDevice} from "../http/deviceAPI";
+import {Context} from "../index";
+import {observer} from "mobx-react-lite";
 
-const DevicePage = () => {
+const DevicePage = observer(() => {
+    const {user} = useContext(Context)
     const [device, setDevice] = useState({info: []})
     const {id} = useParams()
     useEffect(() => {
         fetchOneDevice(id).then(data => setDevice(data))
     }, [id])
+
     return (
         <Container className="mt-3">
             <Row>
@@ -37,7 +41,7 @@ const DevicePage = () => {
                         style={{width: 300, height: 300, fontSize: 32, border: '5px solid lightgrey'}}
                     >
                         <h3>От: {device.price} руб.</h3>
-                        <Button variant={'outline-dark'}>Добавить в корзину</Button>
+                        <Button variant={'outline-dark'} onClick={() => {user.setBasket(device)}}>Добавить в корзину</Button>
                     </Card>
                 </Col>
             </Row>
@@ -54,6 +58,6 @@ const DevicePage = () => {
             </Row>
         </Container>
     );
-};
+});
 
 export default DevicePage;
