@@ -1,8 +1,8 @@
 const Router = require('express')
 const router = new Router()
 const basketController = require('../controllers/basketController')
-router.post('/', basketController.addToBasket)
-router.delete('/basket', basketController.deleteFromBasket)
-router.get('/basket', basketController.getGoods)
+
+router.delete('/:id', basketController.removeFromBasket)
+router.get('/:id', basketController.getBasket)
 
 module.exports = router

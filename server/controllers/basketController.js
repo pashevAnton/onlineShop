@@ -1,26 +1,21 @@
-const {Basket, BasketDevice, Device, DeviceInfo} = require('../models/models')
-class BrandController {
-    async getGoods(req, res) {
-        const devices = await BasketDevice.findAll()
-        return res.json(devices)
+const {BasketDevice} = require('../models/models')
+
+class BasketController {
+    async removeFromBasket(req, res) {
+        const {id} = req.body
+        const basketDevice = await BasketDevice.destroy({
+            where: {id}
+        })
+        return res.json(basketDevice)
     }
 
-    async deleteFromBasket(req, res){
-        const {id} = req.params
-        const device = await Device.destroy(
-            {
-                where: {id},
-                include: [{model: DeviceInfo, as: 'info'}]
-            },
-        )
-        return res.json(device)
-    }
-
-    async addToBasket(req, res){
-        const {device} = req.body
-        const devices = await BasketDevice.create({device})
-        return res.json(devices)
+    async getBasket(req, res) {
+        let {id} = req.params
+        let basketDevices = await BasketDevice.findAll({
+            where: {basketId: id}
+        })
+        return res.json(basketDevices)
     }
 }
 
-module.exports = new BrandController()
+module.exports = new BasketController()
